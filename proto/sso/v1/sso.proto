@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package auth;
+package sso.v1;
 
-option go_package = "barnigator.sso.v1;ssov1";
+option go_package = "github.com/barnigator/protos/gen/go/sso/v1;ssov1";
 
 // Auth is service for managing permissions and roles.
 service Auth {
@@ -12,6 +12,10 @@ service Auth {
   rpc Login (LoginRequest) returns (LoginResponse);
   // IsAdmin checks whether a user is an admin.
   rpc IsAdmin (IsAdminRequest) returns (IsAdminResponse);
+  // ValidateToken checks JWT token
+  rpc ValidateToken (ValidateTokenRequest) returns (ValidateTokenResponse);
+  //  GetUser returns user
+  rpc GetUser (GetUserRequest) returns (GetUserResponse);
 }
 
 message IsAdminRequest {
@@ -39,4 +43,26 @@ message LoginRequest {
 
 message LoginResponse {
   string token = 1; // Auth token of the logged in user.
+}
+
+message ValidateTokenRequest {
+  string token = 1;
+}
+
+message ValidateTokenResponse {
+  int64 user_id = 1;
+  string email = 2;
+  string role = 3;
+  bool is_active = 4;
+}
+
+message GetUserRequest {
+  int64 user_id = 1;
+}
+
+message GetUserResponse {
+  int64 user_id = 1;
+  string email = 2;
+  string role = 3;
+  bool is_active = 4;
 }
