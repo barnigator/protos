@@ -10,7 +10,7 @@ import "google/protobuf/field_mask.proto";
 service SellerService {
   rpc CreateSeller (CreateSellerRequest) returns (SellerResponse);
   rpc GetSeller (GetSellerRequest) returns (SellerResponse);
-  rpc GetSellerByUserID (GetSellerByUserIDRequest) returns (SellerResponse);
+  rpc ListSellersByUserID (ListSellersByUserIDRequest) returns (ListSellersResponse);
   rpc UpdateSeller (UpdateSellerRequest) returns (SellerResponse);
   rpc GetSellerStatus (GetSellerStatusRequest) returns (GetSellerStatusResponse);
   rpc ArchiveSeller (ArchiveSellerRequest) returns (google.protobuf.Empty);
@@ -61,8 +61,12 @@ message GetSellerRequest {
   string seller_id = 1;
 }
 
-message GetSellerByUserIDRequest {
+message ListSellersByUserIDRequest {
   string user_id = 1;
+}
+
+message ListSellersResponse {
+  repeated Seller sellers = 1;
 }
 
 message UpdateSellerRequest {

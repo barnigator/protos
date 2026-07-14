@@ -21,7 +21,7 @@ const _ = grpc.SupportPackageIsVersion7
 type SellerServiceClient interface {
 	CreateSeller(ctx context.Context, in *CreateSellerRequest, opts ...grpc.CallOption) (*SellerResponse, error)
 	GetSeller(ctx context.Context, in *GetSellerRequest, opts ...grpc.CallOption) (*SellerResponse, error)
-	GetSellerByUserID(ctx context.Context, in *GetSellerByUserIDRequest, opts ...grpc.CallOption) (*SellerResponse, error)
+	ListSellersByUserID(ctx context.Context, in *ListSellersByUserIDRequest, opts ...grpc.CallOption) (*ListSellersResponse, error)
 	UpdateSeller(ctx context.Context, in *UpdateSellerRequest, opts ...grpc.CallOption) (*SellerResponse, error)
 	GetSellerStatus(ctx context.Context, in *GetSellerStatusRequest, opts ...grpc.CallOption) (*GetSellerStatusResponse, error)
 	ArchiveSeller(ctx context.Context, in *ArchiveSellerRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
@@ -58,9 +58,9 @@ func (c *sellerServiceClient) GetSeller(ctx context.Context, in *GetSellerReques
 	return out, nil
 }
 
-func (c *sellerServiceClient) GetSellerByUserID(ctx context.Context, in *GetSellerByUserIDRequest, opts ...grpc.CallOption) (*SellerResponse, error) {
-	out := new(SellerResponse)
-	err := c.cc.Invoke(ctx, "/seller.v1.SellerService/GetSellerByUserID", in, out, opts...)
+func (c *sellerServiceClient) ListSellersByUserID(ctx context.Context, in *ListSellersByUserIDRequest, opts ...grpc.CallOption) (*ListSellersResponse, error) {
+	out := new(ListSellersResponse)
+	err := c.cc.Invoke(ctx, "/seller.v1.SellerService/ListSellersByUserID", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -145,7 +145,7 @@ func (c *sellerServiceClient) DeleteSocialLink(ctx context.Context, in *DeleteSo
 type SellerServiceServer interface {
 	CreateSeller(context.Context, *CreateSellerRequest) (*SellerResponse, error)
 	GetSeller(context.Context, *GetSellerRequest) (*SellerResponse, error)
-	GetSellerByUserID(context.Context, *GetSellerByUserIDRequest) (*SellerResponse, error)
+	ListSellersByUserID(context.Context, *ListSellersByUserIDRequest) (*ListSellersResponse, error)
 	UpdateSeller(context.Context, *UpdateSellerRequest) (*SellerResponse, error)
 	GetSellerStatus(context.Context, *GetSellerStatusRequest) (*GetSellerStatusResponse, error)
 	ArchiveSeller(context.Context, *ArchiveSellerRequest) (*emptypb.Empty, error)
@@ -167,8 +167,8 @@ func (UnimplementedSellerServiceServer) CreateSeller(context.Context, *CreateSel
 func (UnimplementedSellerServiceServer) GetSeller(context.Context, *GetSellerRequest) (*SellerResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSeller not implemented")
 }
-func (UnimplementedSellerServiceServer) GetSellerByUserID(context.Context, *GetSellerByUserIDRequest) (*SellerResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetSellerByUserID not implemented")
+func (UnimplementedSellerServiceServer) ListSellersByUserID(context.Context, *ListSellersByUserIDRequest) (*ListSellersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListSellersByUserID not implemented")
 }
 func (UnimplementedSellerServiceServer) UpdateSeller(context.Context, *UpdateSellerRequest) (*SellerResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateSeller not implemented")
@@ -243,20 +243,20 @@ func _SellerService_GetSeller_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _SellerService_GetSellerByUserID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetSellerByUserIDRequest)
+func _SellerService_ListSellersByUserID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListSellersByUserIDRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SellerServiceServer).GetSellerByUserID(ctx, in)
+		return srv.(SellerServiceServer).ListSellersByUserID(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/seller.v1.SellerService/GetSellerByUserID",
+		FullMethod: "/seller.v1.SellerService/ListSellersByUserID",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SellerServiceServer).GetSellerByUserID(ctx, req.(*GetSellerByUserIDRequest))
+		return srv.(SellerServiceServer).ListSellersByUserID(ctx, req.(*ListSellersByUserIDRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -421,8 +421,8 @@ var SellerService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _SellerService_GetSeller_Handler,
 		},
 		{
-			MethodName: "GetSellerByUserID",
-			Handler:    _SellerService_GetSellerByUserID_Handler,
+			MethodName: "ListSellersByUserID",
+			Handler:    _SellerService_ListSellersByUserID_Handler,
 		},
 		{
 			MethodName: "UpdateSeller",
