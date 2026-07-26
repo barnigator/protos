@@ -18,7 +18,6 @@ service SellerService {
 
   rpc AddSocialLink (AddSocialLinkRequest) returns (SocialLinkResponse);
   rpc ListSocialLinks (ListSocialLinksRequest) returns (ListSocialLinksResponse);
-  rpc UpdateSocialLink (UpdateSocialLinkRequest) returns (SocialLinkResponse);
   rpc DeleteSocialLink (DeleteSocialLinkRequest) returns (google.protobuf.Empty);
 }
 
@@ -103,7 +102,7 @@ enum SocialLinkType {
 message SocialLink {
   string id = 1;
   string seller_id = 2;
-  SocialLinkType type = 3;
+  SocialLinkType link_type = 3;
   string url = 4;
 }
 
@@ -116,20 +115,13 @@ message ListSocialLinksRequest {
 }
 
 message ListSocialLinksResponse {
-  repeated SocialLink link = 1;
+  repeated SocialLink links = 1;
 }
 
 message AddSocialLinkRequest {
   string seller_id = 1;
-  SocialLinkType type = 2;
+  SocialLinkType link_type = 2;
   string url = 3;
-}
-
-message UpdateSocialLinkRequest {
-  string link_id = 1;
-  SocialLinkType type = 2;
-  string url = 3;
-  google.protobuf.FieldMask update_mask = 4;
 }
 
 message DeleteSocialLinkRequest {
